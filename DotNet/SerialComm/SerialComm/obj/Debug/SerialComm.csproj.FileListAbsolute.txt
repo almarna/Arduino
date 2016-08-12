@@ -1,0 +1,6 @@
+D:\Dev\Arduino\DotNet\SerialComm\SerialComm\bin\Debug\SerialComm.exe.config
+D:\Dev\Arduino\DotNet\SerialComm\SerialComm\bin\Debug\SerialComm.exe
+D:\Dev\Arduino\DotNet\SerialComm\SerialComm\bin\Debug\SerialComm.pdb
+D:\Dev\Arduino\DotNet\SerialComm\SerialComm\obj\Debug\SerialComm.csprojResolveAssemblyReference.cache
+D:\Dev\Arduino\DotNet\SerialComm\SerialComm\obj\Debug\SerialComm.exe
+D:\Dev\Arduino\DotNet\SerialComm\SerialComm\obj\Debug\SerialComm.pdb
