@@ -1,5 +1,3 @@
-// TempOneWire.h
-
 #ifndef _TEMPONEWIRE_h
 #define _TEMPONEWIRE_h
 
@@ -9,13 +7,9 @@
 	#include "WProgram.h"
 #endif
 
-#ifndef OneWire_h
-	#include <OneWire.h>
-#endif
-
-#ifndef DallasTemperature_h
-	#include <DallasTemperature.h>
-#endif
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include "Common.h"
 
 class TempOneWire
 {
@@ -23,8 +17,9 @@ class TempOneWire
 	OneWire* oneWire;
 	DallasTemperature* dallasSensors;
 
-	DeviceAddress termometer1;
+	DeviceAddress sensorAddresses[1];
 public:
+	DeviceStatus* Status;
 	TempOneWire(int pin);
 	float GetTemp();
 };

@@ -18,7 +18,7 @@ struct TempHumLibResult
 	char message[10];
 };
 
-void serialPrintf(char *fmt, ...);
+//void serialPrintf(char *fmt, ...);
 void printJson(TempHumLibResult *tempHumLibResult, float Temp2);
 void GetTempHumLibResult(int pin, TempHumLibResult *result);
 

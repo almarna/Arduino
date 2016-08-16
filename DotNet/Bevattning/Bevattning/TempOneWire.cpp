@@ -1,58 +1,60 @@
-// 
-// 
-// 
-#ifndef _TEMPONEWIRE_h
-	#include "TempOneWire.h"
-#endif
+#include "TempOneWire.h"
 
 TempOneWire::TempOneWire(int pin)
 {
+
 	oneWire = new OneWire(pin);
 	if (oneWire == NULL)
 	{
-		Serial.println("OneWireNull");
+		Status = new DeviceStatus(-1, "Can not intiate OneWire");
 		return;
 	}
-	// Pass our oneWire reference to Dallas Temperature. 
+
 	dallasSensors = new DallasTemperature(oneWire);
 	if (dallasSensors == NULL)
 	{
-		Serial.println("DallasSensorsNull");
+		Status = new DeviceStatus(-2, "Can not intiate DallasTemperature");
 		return;
 	}
 
-	// locate devices on the bus
-	Serial.print("Locating devices...");
 	dallasSensors->begin();
-	Serial.print("Found ");
-	Serial.print(dallasSensors->getDeviceCount(), DEC);
-	Serial.println(" devices.");
+	int sensorsCount = dallasSensors->getDeviceCount();
+	if (sensorsCount < 1)
+	{
+		Status = new DeviceStatus(-3, "No sensors found");
+		return;
+	}
 
-	// report parasite power requirements
 	Serial.print("Parasite power is: ");
 	Serial.println(dallasSensors->isParasitePowerMode() ? "ON" : "OFF");
 
-	if (!dallasSensors->getAddress(termometer1, 0))
+	int index = 0; // todo flera sensorer
+	if (!dallasSensors->getAddress(sensorAddresses[index], index))
 	{
-		Serial.println("Unable to find address for Device 0");
+		Status = new DeviceStatus(-4, "No device at position 0");
+		return;
 	}
 
-	dallasSensors->setResolution(termometer1, 9);
+	dallasSensors->setResolution(0, 9);
 
-	Serial.print("Device 0 Resolution: ");
-	Serial.print(dallasSensors->getResolution(termometer1), DEC);
-	Serial.println();
+	Status = new DeviceStatus(0, "OK");
+	//Serial.print("Device 0 Resolution: ");
+	//Serial.print(dallasSensors->getResolution(termometer1), DEC);
+	//Serial.println();
 }
 
 float TempOneWire::GetTemp()
 {
-	Serial.print("Dallas temperatures...");
-	dallasSensors->requestTemperatures(); // Send the command to get temperatures
-	Serial.println("DONE");
+	if (Status->Code != 0)
+	{
+		return -99;
+	}
 
-	float tempC = dallasSensors->getTempC(termometer1);
-	Serial.print("Temp C: ");
-	Serial.print(tempC);
+	dallasSensors->requestTemperatures(); // Send the command to get temperatures
+
+	float tempC = dallasSensors->getTempC(sensorAddresses[0]);
+
+//	Serial.print(tempC);
 
 	return tempC;
 }
